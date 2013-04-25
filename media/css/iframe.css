@@ -1,0 +1,103 @@
+h1 {
+	font-size: 24px;
+	font-family: Georgia,"Times New Roman",Times,serif;
+}
+
+#login_form label {
+	float: left;
+	width: 5em;    
+	margin-left: 1em;
+	text-align: right;
+	font-size: 18px;
+	margin-top: 10px;
+	font-family: Georgia,"Times New Roman",Times,serif;
+	color: #303030;
+}
+
+#register_form label {
+	float: left;
+	width: 7em;    
+	margin-left: 1em;
+	margin-right: -2em;
+	text-align: right;
+	font-size: 17px;
+	margin-top: 10px;
+	font-family: Georgia,"Times New Roman",Times,serif;
+	color: #303030;
+}
+
+input {
+	font-family: Georgia,"Times New Roman",Times,serif;
+	font-size: 20px;
+	background-color: #FFFFFF;
+	padding: 8px;
+	vertical-align: middle;
+}
+
+.loginbox {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.registerbox {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.registertext {
+	float: right;
+	font-size: 12px;
+	margin-top: 12px;
+}
+
+#login_form #submitbutton {
+	margin-top: 4px;
+}
+
+#register_form #submitbutton {
+	position: absolute;
+	margin-top: 10px;
+	margin-left: 170px;
+}
+
+.warningmsg {
+	background-image: url('/media/images/icons/warning.png');
+	background-repeat: no-repeat;
+	background-position: 5px 1px;
+	background-color: #fef5be;
+	border: 1px solid #fdd425;
+	margin-left: auto;
+	margin-right: auto;
+	width: 72%;
+	padding: 3px;
+	text-align: center;
+	font-size: 15px;
+}
+
+.errormsg {
+	background-image: url('/media/images/icons/error.png');
+	background-repeat: no-repeat;
+	background-position: 5px 2px;
+	background-color: #ffcdd1;
+	border: 1px solid #e10c0c;
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+	padding: 3px;
+	text-align: center;
+	font-size: 15px;
+}
+
+.successfulmsg {
+	margin-left: 60px;
+	margin-top: -10px;
+	position: absolute;
+	top: 50%;
+	text-align: center;
+	font-size: 16px;
+}
+
+#successful_login, #no_fields, #wrong_password, #no_user, #no_pass_match, #user_taken {
+	display: none;
+	overflow: visible;
+}

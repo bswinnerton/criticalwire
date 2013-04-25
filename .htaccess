@@ -1,0 +1,82 @@
+RewriteEngine on
+
+RewriteRule ^login/?$ /admin/users/login.php
+RewriteRule ^register/?$ /admin/users/create.php
+RewriteRule ^logout/?$ /admin/users/logout.php
+#RewriteRule ^portal/?$ /admin/index.php
+RewriteRule ^portal/?$ /admin/
+RewriteRule ^portal/posts/?$ /admin/posts/index.php
+RewriteRule ^portal/users/?$ /admin/users/index.php
+RewriteRule ^portal/edit.php([0-9]+)/([^/\.]+)?$ /admin/posts/edit.php$1
+
+## Used to redirect anything starting with /post ##
+RewriteRule ^posts/?$ /posts/index.php?cat=none&area=none
+RewriteRule ^posts/([0-9]+)days/?$ /posts/index.php?area=none&days=$1
+RewriteRule ^posts/technology/?$ /posts/index.php?cat=Technology&area=none
+RewriteRule ^posts/technology/page([0-9]+)/?$ /posts/index.php?cat=Technology&area=none&p=$1
+RewriteRule ^posts/technology/([0-9]+)days/?$ /posts/index.php?cat=Technology&area=none&days=$1
+RewriteRule ^posts/technology/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?cat=Technology&area=none&days=$1&p=$2
+RewriteRule ^posts/music/?$ /posts/index.php?cat=Music&area=none
+RewriteRule ^posts/music/page([0-9]+)/?$ /posts/index.php?cat=Music&area=none&p=$1
+RewriteRule ^posts/music/([0-9]+)days/?$ /posts/index.php?cat=Music&area=none&days=$1
+RewriteRule ^posts/music/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?cat=Music&area=none&days=$1&p=$2
+RewriteRule ^posts/photography/?$ /posts/index.php?cat=Photography&area=none
+RewriteRule ^posts/photography/page([0-9]+)/?$ /posts/index.php?cat=Photography&area=none&p=$1
+RewriteRule ^posts/photography/([0-9]+)days/?$ /posts/index.php?cat=Photography&area=none&days=$1
+RewriteRule ^posts/photography/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?cat=Photography&area=none&days=$1&p=$2
+# To redirect anything with just the id and title in it:
+RewriteRule ^posts/([0-9]+)/([^/\.]+)/?$ /posts/index.php?act=view&id=$1&title=$2 [NE]
+
+## Used to redirect anything starting with /blog ##
+RewriteRule ^blog/?$ /posts/index.php?area=blog
+RewriteRule ^blog/page([0-9]+)/?$ /posts/index.php?area=blog&p=$1
+RewriteRule ^blog/([0-9]+)days/?$ /posts/index.php?area=blog&days=$1
+RewriteRule ^blog/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=blog&days=$1&p=$2
+RewriteRule ^blog/technology/?$ /posts/index.php?area=blog&cat=Technology
+RewriteRule ^blog/technology/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Technology&p=$1
+RewriteRule ^blog/technology/([0-9]+)days/?$ /posts/index.php?area=blog&cat=Technology&days=$1
+RewriteRule ^blog/technology/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Technology&days=$1&p=$2
+RewriteRule ^blog/music/?$ /posts/index.php?area=blog&cat=Music
+RewriteRule ^blog/music/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Music&p=$1
+RewriteRule ^blog/music/([0-9]+)days/?$ /posts/index.php?area=blog&cat=Music&days=$1
+RewriteRule ^blog/music/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Music&days=$1&p=$2
+RewriteRule ^blog/photography/?$ /posts/index.php?area=blog&cat=Photography
+RewriteRule ^blog/photography/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Photography&p=$1
+RewriteRule ^blog/photography/([0-9]+)days/?$ /posts/index.php?area=blog&cat=Photography&days=$1
+RewriteRule ^blog/photography/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=blog&cat=Photography&days=$1&p=$2
+
+## Used to redirect anything starting with /news ##
+RewriteRule ^news/?$ /posts/index.php?area=news
+RewriteRule ^news/page([0-9]+)/?$ /posts/index.php?area=news&p=$1
+RewriteRule ^news/([0-9]+)days/?$ /posts/index.php?area=news&days=$1
+RewriteRule ^news/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=news&days=$1&p=$2
+RewriteRule ^news/technology/?$ /posts/index.php?area=news&cat=Technology
+RewriteRule ^news/technology/page([0-9]+)/?$ /posts/index.php?area=news&cat=Technology&p=$1
+RewriteRule ^news/technology/([0-9]+)days/?$ /posts/index.php?area=news&cat=Technology&days=$1
+RewriteRule ^news/technology/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=news&cat=Technology&days=$1&p=$2
+RewriteRule ^news/music/?$ /posts/index.php?area=news&cat=Music
+RewriteRule ^news/music/page([0-9]+)/?$ /posts/index.php?area=news&cat=Music&p=$1
+RewriteRule ^news/music/([0-9]+)days/?$ /posts/index.php?area=news&cat=Music&days=$1
+RewriteRule ^news/music/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=news&cat=Music&days=$1&p=$2
+RewriteRule ^news/photography/?$ /posts/index.php?area=news&cat=Photography
+RewriteRule ^news/photography/page([0-9]+)/?$ /posts/index.php?area=news&cat=Photography&p=$1
+RewriteRule ^news/photography/([0-9]+)days/?$ /posts/index.php?area=news&cat=Photography&days=$1
+RewriteRule ^news/photography/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=news&cat=Photography&days=$1&p=$2
+
+## Used to redirect anything starting with /reviews ##
+RewriteRule ^reviews/?$ /posts/index.php?area=reviews
+RewriteRule ^reviews/page([0-9]+)/?$ /posts/index.php?area=reviews&p=$1
+RewriteRule ^reviews/([0-9]+)days/?$ /posts/index.php?area=reviews&days=$1
+RewriteRule ^reviews/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=reviews&days=$1&p=$2
+RewriteRule ^reviews/technology/?$ /posts/index.php?area=reviews&cat=Technology
+RewriteRule ^reviews/technology/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Technology&p=$1
+RewriteRule ^reviews/technology/([0-9]+)days/?$ /posts/index.php?area=reviews&cat=Technology&days=$1
+RewriteRule ^reviews/technology/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Technology&days=$1&p=$2
+RewriteRule ^reviews/music/?$ /posts/index.php?area=reviews&cat=Music
+RewriteRule ^reviews/music/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Music&p=$1
+RewriteRule ^reviews/music/([0-9]+)days/?$ /posts/index.php?area=reviews&cat=Music&days=$1
+RewriteRule ^reviews/music/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Music&days=$1&p=$2
+RewriteRule ^reviews/photography/?$ /posts/index.php?area=reviews&cat=Photography
+RewriteRule ^reviews/photography/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Photography&p=$1
+RewriteRule ^reviews/photography/([0-9]+)days/?$ /posts/index.php?area=reviews&cat=Photography&days=$1
+RewriteRule ^reviews/photography/([0-9]+)days/page([0-9]+)/?$ /posts/index.php?area=reviews&cat=Photography&days=$1&p=$2 [L]

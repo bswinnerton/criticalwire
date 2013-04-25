@@ -1,0 +1,158 @@
+#!/bin/bash
+
+#########################################################################
+#  Script designed by Brooks Swinnerton of CriticalWire Web Solutions   #
+#########################################################################
+#  This program is designed to backup your root drive and MySQL db's    #
+#  and transfer them to an NFS share                                    #
+#                                                                       #
+#  To install this script simply run the following commands (no quotes) #
+#   "mv /current/location/of/script /usr/bin/backup" <--To run in place #
+#   "chmod o+x /usr/bin/backup"                <--To make it executable #
+#  and edit the following configuration appropriately:                  #
+#########################################################################
+
+##Configuration
+
+# remote_ip is the host (either ip or FQDN) that you are connecting to
+remote_ip=76.243.116.171
+
+# remote_path is the path on the nfs server you are connecting to
+remote_dir=/Data
+
+# mount_path is the local share where remote_path will mount to
+mount_path=/mnt/data
+
+# savetime is the amount of time (in days) you would like you backups
+#  and logs stored. Set to 0 if you do not want your backups deleted
+savetime=7
+
+# local_logpath is the local directory where you would like the log
+#  **no trailing / please**
+local_logpath=/var/log/backup
+
+# folder_name is the name of the folder to be saved on the nfs share
+#  **no trailing / please**
+folder_name=`date '+%m%d%y'`
+
+# backup_name represents the name you would to save the .tar as
+#  **script automatically appends .tar to end of filename**
+backup_name=`date '+%m%d%y'`_file_backup
+
+# sql_name represents the name you would like to save the .sql as
+#  on the remote server
+#  **script automatically appends .sql to end of filename**
+sql_name=`date '+%m%d%y'`_sql_backup
+
+# sql_user is the user that has access to your mysql databases
+#  to back up
+sql_user=root
+
+# sql_pass is the password of the user that has access to the mysql
+#  databases
+sql_pass=G00gl3R$
+
+# log_name is the name of the log as it appears in /var/log & nfs share
+#  script automatically appends .log to end of filename. Default is 
+#  the date that it was backed up in mmddyy form
+log_name=`date '+%m%d%y'`
+
+# End Configuration - Do not edit below this line
+
+
+
+
+
+##Sets the variable remote_path to the full path of the NFS server
+remote_path="${remote_ip}:${remote_dir}"
+
+##Makes sure that the local log directory exists
+if [ ! -d "$local_logpath" ]
+then
+  mkdir $local_logpath
+else
+  :
+fi
+
+##Creates the log based on the variable and begins the logging process
+exec > $local_logpath/$log_name.log 2>&1
+
+##Makes sure that the local mount path exists
+if [ ! -d "$mount_path" ]
+then
+  mkdir $mount_path
+else
+  :
+fi
+
+##Defines the log() function to echo the date and then the following
+## text
+log() {
+ echo `date` : "$@"
+}
+
+##Echo the text Beginning backup using the above log() function
+log "Beginning backup"
+echo ""
+
+##Check to see that the NFS server is up and running using a ping
+echo "Checking remote path.."
+if [ "$(ping -c 3 ${remote_ip} | grep '0 received')" ]
+then
+  ##If no luck, echo to the log file and exit the script
+  echo "Could not contact ${remote_path}"
+  exit 1
+else
+  ##If ping was successful, echo successful message to log file
+  echo "${remote_ip} is alive. continuing.."
+  ##Check to see if NFS share is already mounted using the df command
+  if df | grep -q '$remote_path:$mount_path'
+  then 
+    ##If already mounted, output to log file
+    echo "${remote_path} already mounted, continuing.."
+  else
+    ##If not mounted, output to log, create mount directory and finally
+    ## mount the share
+    echo "mounting ${remote_path} on ${mount_path}"
+    mkdir -p $mount_path
+    mount -t nfs $remote_path $mount_path
+  fi
+fi
+
+cd /
+##Make the directory on the remote server
+mkdir $mount_path/$folder_name
+
+##Start the MySQL backup process
+echo "creating MySQL backup at ${mount_path}/${folder_name}/${sql_name}.sql"
+mysqldump --add-drop-table --user ${sql_user} --password=${sql_pass} --all-databases > $mount_path/$folder_name/$sql_name.sql
+
+##Start the tar backup process of all files except folders with the
+## --exclude parameter
+echo "creating tar backup at ${mount_path}/${folder_name}/${backup_name}.tgz"
+tar -cPzf $mount_path/$folder_name/$backup_name.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/var/run --exclude=/var/spool/postfix --exclude=/dev/log --exclude=/var/lib/named/dev/log --exclude=*/*sock* /
+
+##Log Deletion
+## Check to see if savetime is equal to 0
+if [ $savetime == 0 ]
+then
+  ##Do nothing
+  :
+else {
+  ##Find everything older than savetime and remove force
+  echo "removing backups older than ${savetime} days.."
+  find $mount_path/* -mtime +$savetime -exec rm -Rf {} \;
+}
+fi
+
+##Copy the contents of the log to the remote share
+cp $local_logpath/$log_name.log $mount_path/$folder_name/$log_name.log
+
+##Clean up. Unmount the mount path, and remove the local directory
+umount $mount_path
+rmdir $mount_path
+
+echo ""
+log "Backup has completed"
+
+exit 0

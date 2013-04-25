@@ -1,0 +1,11 @@
+User-Agent: *
+Sitemap: http://www.criticalwire.com/sitemap.xml
+Disallow: /admin
+Disallow: /clients
+Disallow: /dev
+Disallow: /error
+Disallow: /include
+Disallow: /media
+Disallow: /search
+Disallow: /webmail
+Disallow: /stats
